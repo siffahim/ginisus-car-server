@@ -58,6 +58,23 @@ async function run() {
             res.json(service)
         })
 
+        //put
+        app.put('/services/:id', async (req, res) => {
+            const id = req.params.id;
+            const updateService = req.body;
+            console.log(updateService)
+            const query = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    name:updateService.name,
+                    price: updateService.price
+                },
+            };
+            const result = await serviceCollection.updateOne(query, updateDoc, options)
+            res.json(result)
+        })
+
     }
     finally {
         // await client.close();
